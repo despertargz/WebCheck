@@ -8,16 +8,19 @@ from email.mime.text import MIMEText
 config = yaml.load(open("config.yaml", "r"))
 
 def send_email(url):
-    email = MIMEText(url)
-    email["from"] = "me"
-    email["to"] = "you"
-    email["subject"] = "MicroCenter Product Is Available!"
+	email = """From: me
+To: you
+Subject: Microcenter product is available!
 
-    smtp = SMTP_SSL("smtp.gmail.com", 465, timeout=20)
-    smtp.login(config["username"], config["password"])
+"""
 
-    smtp.send_message(email, config["username"], config["username"])
-    smtp.quit()
+	email += url	
+
+	smtp = SMTP_SSL("smtp.gmail.com", 465, timeout=20)
+	smtp.login(config["username"], config["password"])
+
+	smtp.sendmail(config["username"], config["username"], email)
+	smtp.quit()
 
 
 def in_stock(url):
